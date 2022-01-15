@@ -15,7 +15,7 @@ class CalculateAPIView(APIView):
 
     def get(self, request, number_1 = None, number_2 = None):
         ''' store data in database and queue, then return the database entry id '''
-        # logger.warning(number_1,number_2)
+        logger.warning(number_1,number_2)
         sum_instance = Sum.objects.create(number1=number_1, number2=number_2)
         data = sum_instance.pk
         calculate_sum.delay(sum_instance.number1,sum_instance.number2,sum_instance.pk)

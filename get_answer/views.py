@@ -13,10 +13,9 @@ class GetAnswerAPIView(APIView):
 
     def get(self, request, identifier = None):
         ''' check database using sum table id and returns corresponding status codes '''
-        # logger.warning(identifier)
+        logger.warning(identifier)
         try:
             sum_instance = Sum.objects.get(id = identifier)
-            # logger.warning('not in except')
             if sum_instance.answer is None:
                 data = 'Please wait.'
                 return Response(data,status=status.HTTP_200_OK)
