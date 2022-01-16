@@ -15,8 +15,12 @@ class CalculateAPIView(APIView):
 
     def get(self, request, number_1 = None, number_2 = None):
         ''' store data in database and queue, then return the database entry id '''
-        logger.warning(number_1,number_2)
+        logger.info(number_1,number_2)
+        if len(str(number_1)) > 19 or len(str(number_2)) > 19:
+            #As per sqlite3 database limitation in int
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         sum_instance = Sum.objects.create(number1=number_1, number2=number_2)
         data = sum_instance.pk
         calculate_sum.delay(sum_instance.number1,sum_instance.number2,sum_instance.pk)
+        #callint background task
         return Response(data,status=status.HTTP_200_OK)
